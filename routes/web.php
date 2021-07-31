@@ -13,7 +13,6 @@ use App\Http\Controllers\MainController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', [MainController::class, 'index'])->name('index');
 Route::get('info', [MainController::class, 'info'])->name('info');
 Route::get('news', [MainController::class, 'news'])->name('news');
