@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +13,6 @@ use App\Http\Controllers\MainController;
 |
 */
 
-Route::get('/', [MainController::class, 'index'])->name('index');
-Route::get('info', [MainController::class, 'info'])->name('info');
-Route::get('news', [MainController::class, 'news'])->name('news');
+Route::get('/', function () {
+    return view('welcome');
+});
