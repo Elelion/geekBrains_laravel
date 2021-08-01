@@ -35,6 +35,9 @@ services:
         ports:
             - 6003:6003
         volumes:
+            # что бы изменить версию php, нужно:
+            # Изменить в докерфайле версию на 80 и пересобрать
+            # Удалить всё и собрать по новой
             - ./:/var/www/geekbrains-tutorial
             - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
         depends_on:
