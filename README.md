@@ -4,7 +4,7 @@
 - установили laravel debugger
 - настроили окружение Docker + laravel Sail
 - Создали:
-    - контроллер
-    - вьюхи
-    - master layout
-    - роуты
+    - контроллер `app/Http/Controllers/MainController.php`
+    - вьюхи `app/resources/view/...`
+    - master layout `app/resources/view/layouts/master.blade.php`
+    - роуты `app/routes/web.php`
