@@ -3,7 +3,8 @@
 @section('content')
 
 <div class="container">
-  <p>n e w s</p>
+  <p>s h o w</p>
+  <p>{{ $type ?? 'Какой то параметр' }} с id: {{ $id ?? '' }}</p>
 </div>
 
 @endsection
