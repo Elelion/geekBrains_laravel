@@ -6,6 +6,7 @@
 /phpunit.xml
 /.idea
 /.vscode
+/resources/template_layouts
 
 docker-compose.override.yml
 Homestead.json
