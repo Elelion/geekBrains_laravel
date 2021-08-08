@@ -1,25 +1,49 @@
-@extends('layouts.master')
+@extends('layouts.main')
 @section('title', 'главная')
 @section('content')
 
-<div class="container">
-  <p>m a i n</p>
-  <br>
-  @foreach($news as $item)
-    <div class="items__links">
-      <strong class="text-success">
-        <a href="{{ route('news.show', [$item['id'], $type = 'Новость']) }}">
-          {{ $item['title'] }}
-        </a>
-      </strong>
+  {{--
+  NOTE:
+  @forelse - аналог foreach который включает в себя ОБЯЗАТЕЛЬНО - условие (@empty)
 
-      <i class="text-info">
-        <a href="{{ route('news.show', [$item['id'], $type = 'Описание']) }}">
-          {{ $item['description'] }}
-        </a>
-      </i>
+  аналогичная запись:
+  foreach... {
+      ...
+      if... {
+        ...
+      }
+    }
+
+  --}}
+  @forelse($newsList as $item)
+
+    <!-- Post preview-->
+    <div class="post-preview">
+      {{--
+      NOTE:
+      {{  }} - аналогично выводу <?= ?> так же они экранируют переменную
+      {{  !! !! }} - НЕ экранируют переменную
+      --}}
+      <a href="{{ route('news.show', [$item['id'], $type = 'Новость']) }}">
+        <h2 class="post-title">{{ $item['title'] }}</h2>
+        <h3 class="post-subtitle">{{ $item['description'] }}</h3>
+      </a>
+      <p class="post-meta">
+        Опубликовал
+        <a href="#!">Админ</a>
+        on {{ now()->format('d-m-y H:i') }}
+      </p>
     </div>
-  @endforeach
-</div>
+
+    <!-- Divider-->
+    <hr class="my-4" />
+
+  @empty
+    <h1>Новостей нет</h1>
+
+  @endforelse
+
+  <!-- Pager-->
+  <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
 
 @endsection
