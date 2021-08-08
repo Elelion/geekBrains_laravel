@@ -14,7 +14,7 @@ class Controller extends BaseController
      *
      * @var array
      */
-    protected array $newsList = [
+    protected $newsList = [
         [
             'id' => 1,
             'title' => 'News 1',
