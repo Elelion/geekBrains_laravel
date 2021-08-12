@@ -1,9 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\NewsController;
+use App\Http\Controllers\Admin\IndexController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +27,7 @@ Route::get('/', [NewsController::class, 'index'])->name('index');
  * admin.news.index итп
  */
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+    Route::get('/', IndexController::class)->name('index');
     Route::resource('categories',AdminCategoryController::class);
     Route::resource('news',AdminNewsController::class);
 });
@@ -35,4 +38,9 @@ Route::group(['prefix' => 'news'], function () {
     Route::get('/show/{id?}/{type}', [NewsController::class, 'show'])
         ->where('id', '\d+')
         ->name('news.show');
+});
+
+Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
+    Route::get('feedback', [UserController::class, 'feedback'])->name('feedback');
+    Route::post('check', [UserController::class, 'check'])->name('check');
 });
