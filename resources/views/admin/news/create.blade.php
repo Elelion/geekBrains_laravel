@@ -11,19 +11,30 @@
   <!-- Content Row -->
   <div class="row">
 
-    <form action="" method="post">
+    @if($errors->any())
+      @foreach($errors->all() as $error)
+        <div class="alert alert-danger">{{ $error }}</div>
+      @endforeach
+    @endif
+
+    <form action="{{ route('admin.news.store') }}" method="post">
       <div class="form-group">
         <label for="title">Заголовки</label>
+        {{-- old() - хелпер сохраняющий последний запрос и выводящий его обратно --}}
+        <input type="text" class="form-control" name="title" id="title" value="{{ old('title') }}">
+      </div>
 
-        <input type="text" class="form-control" name="title" id="title">
+      <div class="form-group">
+        <label for="author">Автор</label>
+        <input type="text" class="form-control" name="author" id="author" value="{{ old('author') }}">
       </div>
 
       <div class="form-group">
         <label for="description">Описание</label>
-
-        <textarea name="description" id="description" cols="30" rows="10" class="form-control"></textarea>
+        <textarea name="description" id="description" cols="30" rows="10" class="form-control">{{ old('description') }}</textarea>
       </div>
 
+      @csrf
       <button class="btn btn-primary">Сохранить</button>
     </form>
 
