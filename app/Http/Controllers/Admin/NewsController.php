@@ -37,7 +37,28 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        /**
+         * $request - обертка над супер глобальными массивами типа
+         * $_POST, $_REQUEST итп
+         *
+         * $request->only(['title', 'description']) - получить ТОЛЬКО заданные поля
+         * все остальное проигнорируется
+         *
+         * $request->except(['title', 'description']) - исключить указанные поля
+         *
+         * $request->input('title', 'some title') - получить только заданное поле,
+         * если поля нет то получаем значение по дефолту - some title
+         *
+         * $request->title - получение данных на прямую (не рекомендуется так делать!)
+         *
+         * $request->has('title') - проверяет существование поля (вернет true / false)
+         */
+
+        $request->validate([
+            'title' => ['required', 'string']
+        ]);
+
+        dd($request);
     }
 
     /**
