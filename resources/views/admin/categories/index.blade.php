@@ -10,7 +10,7 @@
 
   <!-- Content Row -->
   <div class="row">
-
+    <h1>Категории</h1>
   </div>
 
 @endsection
