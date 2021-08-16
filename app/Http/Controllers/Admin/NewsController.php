@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\News;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class NewsController extends Controller
 {
@@ -14,8 +16,25 @@ class NewsController extends Controller
      */
     public function index()
     {
+        $news = new News();
+        $newsList = $news->getNews();
+
+        /**
+         * join пример:
+         * public function index(Request $request) {...
+         *
+         * $join = DB::table('news')
+         * ->join('categories', 'news.category_id', '=', 'categories.id')
+         * ->select("news.*", 'categories.title as categoryTitle')
+         * ->where('title', '%like%', '%' . $request->query('s') . '%')
+         * ->adnWhere('news.status', '<>', 'DRAFT')
+         * ->orWhere('news.id', '>', 8)
+         * ->whereIn('news.id', [1, 7])
+         * ->get();
+         */
+
         return view('admin.news.index', [
-            'newsList' => $this->newsList
+            'newsList' => $newsList,
         ]);
     }
 
