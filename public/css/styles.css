@@ -11207,6 +11207,7 @@ header.masthead .site-heading .h1 {
 
 .post-preview > a {
   color: #212529;
+	text-decoration: none;
 }
 .post-preview > a:focus, .post-preview > a:hover {
   text-decoration: none;
