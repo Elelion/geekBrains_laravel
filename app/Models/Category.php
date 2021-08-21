@@ -4,8 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Создаем модель для нашей таблици Категории
@@ -18,29 +17,42 @@ class Category extends Model
     use HasFactory;
 
     protected $table = 'categories';
-    protected array $allowedFields = ['id', 'title', 'description'];
 
-    public function getCategories(): Collection
+    /**
+     * Давайте представим такую ситуацию.
+     * У Вас есть таблица users, и в ней помимо прочей информации (имя, логин,
+     * пароль ...) есть такая колонка как: is_admin. Очень банальная уязвимость.
+     * Пользователь при регистрации добавляет через инспектор кода дополнительное
+     * инпут-поле с таким же именем. И присваивает ему значение 1. Какой будет
+     * результат? Пользователь сразу же получит все права админа после регистрации.
+     * Именно для таких случаев в laravel и существуют два отличных
+     * массива: fillable и guarded.
+
+     * В случае, если в массив fillable не указать колонку is_admin, вылезет
+     * ошибка, и пользователь, встроивший данное поле зарегистрироваться
+     * уже не сможет!
+     *
+     * В массив fillable мы указываем колонки, которые РАЗРЕШАЕМ заполнять
+     * в guarded - которые ЗАПРЕЩАЕМ.
+     */
+    protected $fillable = [
+        'title', 'description'
+    ];
+
+    /**
+     * пишем связь для модели News
+     * в моделе News пишем обратную связь для модели Category
+     */
+    public function news(): HasMany
     {
         /**
-         * аналогично записи
-         * DB::select("SELECT id, title, description from {$this->table}");
+         * 1 параметр - модель с которой хотим связаться
+         * 2 параметр - поле к которому мы привязываемся
+         * 3 параметр - наше поле текущей таблици которое мы привязываем
          *
-         * НО возвращает уже не массив а коллекцию! (Illuminate\Support\Collection)
+         * метод 2 и 3 по сути можно не писать тк laravel умный и сам поймет это
+         * но если поля имеют не стандартное название то лучше написать
          */
-        return DB::table($this->table)
-            ->select($this->allowedFields)
-            ->get();
-    }
-
-    public function getCategoryById(int $id): object
-    {
-        /**
-         * аналогично записи
-         * DB::select("SELECT id, title, description from {$this->table} WHERE id = :id", ['id' => $id]);
-         */
-        return DB::table($this->table)
-            ->select($this->allowedFields)
-            ->find($id);
+        return $this->hasMany(News::class, 'category_id', 'id');
     }
 }
