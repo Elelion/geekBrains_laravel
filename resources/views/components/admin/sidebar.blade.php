@@ -12,7 +12,7 @@
   <hr class="sidebar-divider my-0">
 
   <!-- Nav Item - Dashboard -->
-  <li class="nav-item @if(request()->is('admin')) active @endif">
+  <li class="nav-item @if (request()->is('admin')) active @endif">
     <a class="nav-link" href="{{ route('admin.index') }}">
       <i class="fas fa-fw fa-tachometer-alt"></i>
       <span>Админка</span></a>
@@ -27,19 +27,19 @@
   </div>
 
   <!-- Nav Item - Pages Collapse Menu -->
-  <li class="nav-item @if(request()->routeIs('admin.categories.*')) active @endif">
+  <li class="nav-item @if (request()->routeIs('admin.categories.*')) active @endif">
     <a class="nav-link" href="{{ route('admin.categories.index') }}">
       <i class="fas fa-fw fa-list"></i>
       <span>Категории</span>
     </a>
   </li>
-  <li class="nav-item @if(request()->routeIs('admin.news.*')) active @endif">
+  <li class="nav-item @if (request()->routeIs('admin.news.*')) active @endif">
     <a class="nav-link" href="{{ route('admin.news.index') }}">
       <i class="fas fa-fw fa-list"></i>
       <span>Новости</span>
     </a>
   </li>
-  <li class="nav-item @if(request()->routeIs('user.feedback.*')) active @endif">
+  <li class="nav-item @if (request()->routeIs('user.feedback.*')) active @endif">
     <a class="nav-link" href="{{ route('user.feedback') }}">
       <i class="fas fa-fw fa-list"></i>
       <span>Форма обр. связи</span>

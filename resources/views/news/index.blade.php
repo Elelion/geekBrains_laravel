@@ -15,7 +15,7 @@
     }
 
   --}}
-  @forelse($newsList as $item)
+  @forelse ($newsList as $item)
 
     <!-- Post preview-->
     <div class="post-preview">
@@ -24,14 +24,14 @@
       {{  }} - аналогично выводу <?= ?> так же они экранируют переменную
       {{  !! !! }} - НЕ экранируют переменную
       --}}
-      <a href="{{ route('news.show', [$item['id'], $type = 'Новость']) }}">
-        <h2 class="post-title">{{ $item['title'] }}</h2>
-        <h3 class="post-subtitle">{{ $item['description'] }}</h3>
+      <a href="{{ route('news.show', ['news' => $item->id]) }}">
+        <h2 class="post-title">{{ $item->title }}</h2>
+        <h3 class="post-subtitle">{{ $item->description }}</h3>
       </a>
       <p class="post-meta">
         Опубликовал
-        <a href="#!">Админ</a>
-        on {{ now()->format('d-m-y H:i') }}
+        <a href="#!">{{ $item->author }}</a>
+        oт {{ $item->updated_at }}
       </p>
     </div>
 

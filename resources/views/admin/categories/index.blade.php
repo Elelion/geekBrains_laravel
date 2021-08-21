@@ -14,14 +14,20 @@
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th>#ID</th>
+            <th style="width: 100px;">
+              #ID
+              &nbsp;
+              <a href="?sort=desc" style="text-decoration: none;">↓</a>
+              &nbsp;
+              <a href="?sort=asc" style="text-decoration: none;">↑</a>
+            </th>
             <th>Заголовок</th>
             <th>Текст</th>
             <th>Управление</th>
           </tr>
         </thead>
         <tbody>
-          @forelse($categories as $category)
+          @forelse ($categories as $category)
             <tr>
               <td>{{ $category->id }}</td>
               <td>{{ $category->title }}</td>
@@ -38,6 +44,9 @@
           @endforelse
         </tbody>
       </table>
+
+      {{-- вызываем нашу пагинацию, задаем ее в контроллере ../Admin/CategoryController --}}
+      {{ $categories->links() }}
     </div>
   </div>
 

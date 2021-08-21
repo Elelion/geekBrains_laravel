@@ -10,8 +10,9 @@
 
   <!-- Content Row -->
   <div class="row">
+    @include('inc.message')
 
-    <form action="" method="post">
+    <form action="{{ route('admin.categories.store') }}" method="post">
       <div class="form-group">
         <label for="title">Заголовки</label>
 
@@ -24,6 +25,7 @@
         <textarea name="description" id="description" cols="30" rows="10" class="form-control"></textarea>
       </div>
 
+      @csrf
       <button class="btn btn-primary">Сохранить</button>
     </form>
 
