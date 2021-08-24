@@ -30,7 +30,7 @@
       </a>
       <p class="post-meta">
         Опубликовал
-        <a href="#!">{{ $item->author }}</a>
+        <a href="#">{{ $item->author }}</a>
         oт {{ $item->updated_at }}
       </p>
     </div>

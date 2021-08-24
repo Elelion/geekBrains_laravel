@@ -44,9 +44,24 @@
               {{ now()->format('d-m-y H:i') }}
             @endif
           </td>
-          <td>
-            <a href="{{ route('admin.news.edit', ['news' => $news->id]) }}" style="font-size: 12px;">ред.</a> |
-            <a href="javascript:;" style="font-size: 12px; color: red;">уд.</a>
+          <td style="display: flex;">
+            <a href="{{ route('admin.news.edit', ['news' => $news->id]) }}"
+               style="font-size: 12px;
+                  background: lightgreen;
+                  border-radius: 4px;
+                  transform: none;
+                  padding: 6px 4px 0 4px;
+                  text-decoration: none;"
+            >ред.</a> |
+
+            <form action="{{ route('admin.news.destroy', $news) }}" method="POST">
+              {{ csrf_field() }}
+              {{ method_field('DELETE') }}
+              <button class="btn btn btn-danger"
+                      style="font-size: 12px;
+                          float: left;"
+                      type="submit">уд.</button>
+            </form>
           </td>
         </tr>
       @empty

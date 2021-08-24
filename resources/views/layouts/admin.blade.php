@@ -7,6 +7,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+  {{-- нужен для ajax запроса в нашем admin/categorie/index.blade --}}
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
   <title>SB Admin 2 - Dashboard</title>
 
   <!-- Custom fonts for this template-->
@@ -15,7 +18,7 @@
     rel="stylesheet">
 
   <!-- Custom styles for this template-->
-  <link rel="stylesheet" href="{{ asset("css/sb-admin-2.min.css") }}">
+  <link rel="stylesheet" href="{{ asset("css/sb-admin-2.css") }}">
   <link rel="stylesheet" href="{{ asset("css/sb-admin-2-additional.min.css") }}">
 
   <!-- bootstrap -->
@@ -96,6 +99,12 @@
 <!-- Custom scripts for all pages-->
 <script src="{{ asset("js/sb-admin-2.min.js") }}"></script>
 
+{{--
+задаем секцию в которой потом мы сможем разместить наш любой скрипт
+он будет прописан в
+../admin/categories/index.blade
+--}}
+@stack('js')
 </body>
 
 </html>

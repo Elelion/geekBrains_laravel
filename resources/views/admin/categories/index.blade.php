@@ -34,7 +34,7 @@
               <td>{{ $category->description }}</td>
               <td>
                 <a href="{{ route('admin.categories.edit', ['category' => $category->id]) }}" style="font-size: 12px;">ред.</a> |
-                <a href="javascript:;" style="font-size: 12px; color: red;">уд.</a>
+                <a href="javascript:;" rel="{{ $category->id }}" class="delete" style="font-size: 12px; color: red;">уд.</a>
               </td>
             </tr>
           @empty
@@ -51,3 +51,35 @@
   </div>
 
 @endsection
+
+{{--
+пушим наш скрипт (ajax)
+все что находится в теле push
+будет размещено в секции 'js'
+что мы указали в файле
+../layouts/admin.blade
+--}}
+@push('js')
+  <script type="text/javascript">
+    $(function() {
+      $(".delete").on('click', function () {
+        var id = $(this).attr('rel');
+
+        if (confirm('Подтверждение удаление записи с ID#' + id + " ?")) {
+          $.ajax({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: "DELETE",
+            url: "/admin/categories/" + id,
+            dataType: 'json',
+            success: function (response) {
+              alert('Запись удалена')
+              location.reload();
+            }
+          })
+        }
+      });
+    });
+  </script>
+@endpush
