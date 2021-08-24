@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreNewsRequest;
+use App\Http\Requests\UpdateNewsRequest;
 use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
@@ -54,15 +56,17 @@ class NewsController extends Controller
     }
 
     /**
+     * StoreNewsRequest - см в app/Http/Request/...
+     *
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param StoreNewsRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreNewsRequest $request)
     {
         /**
-         * $request - обертка над супер глобальными массивами типа
+         * Request $request - обертка над супер глобальными массивами типа
          * $_POST, $_REQUEST итп
          *
          * $request->only(['title', 'description']) - получить ТОЛЬКО заданные поля
@@ -76,14 +80,14 @@ class NewsController extends Controller
          * $request->title - получение данных на прямую (не рекомендуется так делать!)
          *
          * $request->has('title') - проверяет существование поля (вернет true / false)
+         *
+         * ---
+         *
+         * Можем написать ...->validated() за место:
+         * $data = $request->only(['title', 'description', 'author', 'status']);
+         * $news = News::create($data);
          */
-
-        $request->validate([
-            'title' => ['required', 'string']
-        ]);
-
-        $data = $request->only(['title', 'description', 'author', 'status']);
-        $news = News::create($data);
+        $news = News::create($request->validated());
 
         if ($news) {
             return redirect()->route('admin.news.index')
@@ -123,36 +127,62 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param UpdateNewsRequest $request
+     * @param News $news
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, News $news)
+    public function update(UpdateNewsRequest $request, News $news)
     {
-        $request->validate([
-            'title' => ['required', 'string']
-        ]);
+        /**
+         * Вернет все отвалидированные данные в виде
+         *
+         * array:3 [▼
+         * "category_id" => "1"
+         * "title" => "dd12341"
+         * "author" => "gutkowski.kyleigh"
+         * ]
+         *
+         * Команда:
+         * dd($request->validated());
+         */
 
-        $news = $news->fill(
-            $request->only(['category_id', 'title', 'description', 'author', 'status'])
-        )->save();
+        /**
+         * запись
+         * $news = $news->fill(
+         *      $request->only(['category_id', 'title', 'description', 'author', 'status'])
+         * )->save();
+         *
+         * мы можем заменить нашей валидацией из UpdateNewsRequest
+         */
+        $news = $news->fill($request->validated())->save();
 
+        /**
+         * trans - хелпер позволяющий обратиться к нашим сообщениям что в
+         * ../resources/lang/ru/messages
+         *
+         * те trans переводит переданный ключ перевода с помощью ваших
+         * файлов локализации
+         *
+         * так же за место trans мы можем писать __(...)
+         * это одно и то же, просто разные формы написания
+         */
         if ($news) {
             return redirect()->route('admin.news.index')
-                ->with('success', 'Новость успешно сохранена');
+                ->with('success', trans('messages.admin.news.create.success'));
         }
 
-        return back()->withInput()->with('error', 'Не удалось сохранить новость');
+        return back()->withInput()->with('error', __('messages.admin.news.update.success'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(News $news)
     {
-        //
+        $news->delete();
+        return redirect()->route('admin.news.index');
     }
 }

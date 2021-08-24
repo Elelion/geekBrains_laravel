@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 /**
  * ресурс контроллеры - создаются для КРУД операций
@@ -70,10 +71,6 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title' =>['required', 'string']
-        ]);
-
         /**
          * Category::create -обращаемся к методу create класса Category
          *
@@ -136,10 +133,6 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        $request->validate([
-            'title' =>['required', 'string']
-        ]);
-
         /**
          * ->fill()
          * записывает в таблицу к указанным полям (если есть ->only()) значения
@@ -166,11 +159,22 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param Request $request
      * @param Category $category
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Category $category)
+    public function destroy(Request $request, Category $category)
     {
-        //
+        if ($request->ajax()) {
+            try {
+                $category->delete();
+                return response()->json('ok');
+            }
+            catch (\Exception $e) {
+                Log::error($e->getMessage());
+
+                return response()->json('error', 400);
+            }
+        }
     }
 }
