@@ -47,3 +47,15 @@ class UpdateNewsRequest extends FormRequest
         ];
     }
 }
+
+/**
+ * Для того что бы создать авторизацию, регистрацию - нам нужно установить
+ * готовые компоненты с ресурса:
+ * https://github.com/laravel/ui
+ *
+ * в сл. последовательности:
+ * - composer require laravel/ui
+ * - php artisan ui bootstrap --auth
+ * - npm install && npm run dev
+ * - npm run dev
+ */

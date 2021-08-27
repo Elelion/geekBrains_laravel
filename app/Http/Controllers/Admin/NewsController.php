@@ -153,6 +153,8 @@ class NewsController extends Controller
          * )->save();
          *
          * мы можем заменить нашей валидацией из UpdateNewsRequest
+         * $request->validated() - будет работать только если мы написали
+         * свой \Requests
          */
         $news = $news->fill($request->validated())->save();
 

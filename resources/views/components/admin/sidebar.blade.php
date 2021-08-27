@@ -39,6 +39,12 @@
       <span>Новости</span>
     </a>
   </li>
+  <li class="nav-item @if (request()->routeIs('admin.users.index')) active @endif">
+    <a class="nav-link" href="{{ route('admin.users.index') }}">
+      <i class="fas fa-fw fa-list"></i>
+      <span>Пользователи</span>
+    </a>
+  </li>
   <li class="nav-item @if (request()->routeIs('user.feedback.*')) active @endif">
     <a class="nav-link" href="{{ route('user.feedback') }}">
       <i class="fas fa-fw fa-list"></i>

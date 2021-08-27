@@ -19,6 +19,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/home';
 
+    /** задаем свою константу для редиректа, прописываем в RegisterController */
+    public const ACCOUNT = '/account';
+
     /**
      * The controller namespace for the application.
      *

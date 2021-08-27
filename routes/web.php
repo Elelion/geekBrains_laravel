@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\IndexController;
+use App\Http\Controllers\Account\IndexController as AccountController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\UsersController as AdminUsers;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\UserController;
 
@@ -21,15 +23,33 @@ use App\Http\Controllers\UserController;
 Route::get('/', [NewsController::class, 'index'])->name('index');
 
 /**
- * подключаем наши ресурс контроллеры (см. в .../Controllers/Admin/...)
+ * middleware - прослойка между маршрутом и контроллером
+ * те что бы попасть на маршрут, лараваель проверит некое условие
+ * auth - говорит о том, что будет проверятся авторизация пользователя
+ * те если такой залогинин то - ок
+ * а если нет - то редирект на логин форму
  *
- * as => admin - дает дополнительный префикс и на выходе будет запись типа
- * admin.news.index итп
+ * auth - только вторизованные пользователи
  */
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
-    Route::get('/', IndexController::class)->name('index');
-    Route::resource('categories',AdminCategoryController::class);
-    Route::resource('news',AdminNewsController::class);
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/account',  AccountController::class)->name('account');
+
+    /**
+     * подключаем наши ресурс контроллеры (см. в .../Controllers/Admin/...)
+     *
+     * as => admin - дает дополнительный префикс и на выходе будет запись типа
+     * admin.news.index итп
+     *
+     * 'middleware' => 'admin' - подключаем обработчик наш middleware
+     * те перед тем как выполниться этот роут - будет исполнена проверка на админа
+     * из нашей middleware - admin
+     */
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function () {
+        Route::get('/', IndexController::class)->name('index');
+        Route::resource('categories',AdminCategoryController::class);
+        Route::resource('news',AdminNewsController::class);
+        Route::resource('users',AdminUsers::class);
+    });
 });
 
 Route::group(['prefix' => 'news'], function () {
@@ -44,6 +64,7 @@ Route::group(['prefix' => 'news'], function () {
         ->name('news.show');
 });
 
+/** тот user что НЕ в папке admin */
 Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
     Route::get('feedback', [UserController::class, 'feedback'])->name('feedback');
     Route::post('check', [UserController::class, 'check'])->name('check');
@@ -69,5 +90,27 @@ Route::get('collection', function () {
      * sortBy - сортировка
      * $collect->sortBy('age')
      */
-    dd($collect->sortBy('age'));
+    // dd($collect->sortBy('age'));
+
+    /**/
+
+    /** заталкиваем в сессию значение */
+    session(['new_session' => 1]);
+
+    /** или так */
+    session()->put('key', 'val');
+
+    /** проверяем есть ли сессия */
+    if (session()->has('new_session')) {
+        // dd(session()->all());
+    }
+
+    /** удалить сессию */
+    session()->forget(['new_session']);
 });
+
+
+/** для авторизации и регистрации, прописывается автоматом после команды laravel/ui */
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
