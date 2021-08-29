@@ -54,4 +54,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'is_admin' => 'boolean',
     ];
+
+    /**
+     * отключаем автообновление времени в таблице при изменении,
+     * это будет делать наш обсервер
+     */
+    public $timestamps = false;
 }

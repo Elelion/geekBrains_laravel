@@ -47,7 +47,7 @@ use App\Models\User;
             <td>{{ $user->email }}</td>
             <td>
               @if ($user->updated_at)
-                {{ $user->updated_at->format('d-m-y H:i') }}
+                {{ $user->updated_at }}
               @else
                 {{ now()->format('d-m-y H:i') }}
               @endif

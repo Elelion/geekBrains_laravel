@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\UserEvent;
+use App\Listeners\UserListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -15,8 +17,26 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
+
+        /**
+         * событие корое происходит когда кто то регестрируется
+         * laravel сам это отслеживает
+         */
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+
+        /**
+         * говорим фрейму, что мы хотим наблюдать за UserEvent
+         * в то время как UserEvent просто сохраняет в переменную в конструкторе
+         * пользователя из user
+         *
+         * а UserListener - обновляет время в таблице
+         *
+         * все - связка готова!
+         */
+        UserEvent::class => [
+            UserListener::class,
         ],
     ];
 

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\UserEvent;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -36,5 +38,18 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * при успешной авторизации вызывается автоматом этот метод
+     * мы передаем туда авторизованного пользователя
+     * а именно в наш UserEvent - тот в конструкторе присвоит нашего юзера
+     * в публичную переменную $user
+     * а затем произойдет событие event в UserListener
+     * которое прописано в EventServiceProvider
+     */
+    public function authenticated(Request $request, $user)
+    {
+        event(new UserEvent($user));
     }
 }
