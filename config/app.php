@@ -179,6 +179,16 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /**
+         * предварительно ставим пакет для парсера
+         *
+         * composer require "orchestra/parser"
+         *
+         * далее прописываем провайдер для нашего парсера
+         * ниже прописываем и хелпер
+         */
+        Orchestra\Parser\XmlServiceProvider::class,
+
     ],
 
     /*
@@ -233,6 +243,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        'XmlParser' => Orchestra\Parser\Xml\Facade::class,
     ],
 
 ];
