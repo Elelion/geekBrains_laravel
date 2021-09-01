@@ -30,4 +30,23 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    /**
+     * предварительно установив
+     * composer require laravel/socialite
+     * и
+     * composer require socialiteproviders/vkontakte
+     * и
+     * создав приложение-сайт в контакте
+     * https://vk.com/editapp
+     *
+     * ресурсы:
+     * https://laravel.su/docs/8.x/socialite
+     * https://socialiteproviders.com (тут выбираем vk)
+     */
+    'vkontakte' => [
+        'client_id' => env('VKONTAKTE_CLIENT_ID'),
+        'client_secret' => env('VKONTAKTE_CLIENT_SECRET'),
+        'redirect' => env('VKONTAKTE_REDIRECT_URI')
+    ],
+
 ];

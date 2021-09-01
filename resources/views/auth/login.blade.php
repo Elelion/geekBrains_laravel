@@ -8,6 +8,9 @@
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
+
+                    <a href="{{ route('vk.init') }}">Авторизация через VK</a>
+
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 

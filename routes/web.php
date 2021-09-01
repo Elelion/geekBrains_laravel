@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\UsersController as AdminUsers;
 use App\Http\Controllers\Admin\ParserController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SocialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,4 +116,12 @@ Route::get('collection', function () {
 /** для авторизации и регистрации, прописывается автоматом после команды laravel/ui */
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
+    ->name('home');
+
+Route::group(['middleware' => 'guest'], function() {
+    Route::get('/init/vkontakte', [SocialController::class, 'init'])
+        ->name('vk.init');
+    Route::get('callback/vkontakte', [SocialController::class, 'callback'])
+        ->name('vk.callback');
+});
